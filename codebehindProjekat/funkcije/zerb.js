@@ -1,10 +1,9 @@
 const odigrajUtakmicu = require("./odigrajUtakmicu.js");
 
 function eliminacionaFaza(grupe, timoviIzGrupa, formaTimova) {
-  // Sortiranje timova po poenima
   timoviIzGrupa.sort((a, b) => b.points - a.points);
 
-  // Podela timova u šešire
+  // Podela timova u sesire
   const sesiri = {
     D: timoviIzGrupa.slice(0, 2),
     E: timoviIzGrupa.slice(2, 4),
@@ -12,23 +11,23 @@ function eliminacionaFaza(grupe, timoviIzGrupa, formaTimova) {
     G: timoviIzGrupa.slice(6, 8),
   };
 
-  // Ispisivanje timova po šeširima
-  console.log("Šešir D:");
+  // Ispisivanje timova po sesirima
+  console.log("sesir D:");
   sesiri.D.forEach((tim) => console.log(`- ${tim.Team}`));
-  console.log("Šešir E:");
+  console.log("sesir E:");
   sesiri.E.forEach((tim) => console.log(`- ${tim.Team}`));
-  console.log("Šešir F:");
+  console.log("sesir F:");
   sesiri.F.forEach((tim) => console.log(`- ${tim.Team}`));
-  console.log("Šešir G:");
+  console.log("sesir G:");
   sesiri.G.forEach((tim) => console.log(`- ${tim.Team}`));
 
-  // Formiranje parova četvrtfinala
+  // Formiranje parova cetvrtfinala
   const cetvrtfinale = [];
 
   function formirajParove(sesir1, sesir2) {
     sesir1.forEach((tim1) => {
       const moguciProtivnici = sesir2.filter((tim2) => {
-        // Proveravamo da li su timovi već igrali jedan protiv drugog
+        // Provera da li su timovi vec igrali jedan protiv drugog
         return !tim1.rezultati[tim2.ISOCode];
       });
 
@@ -45,14 +44,14 @@ function eliminacionaFaza(grupe, timoviIzGrupa, formaTimova) {
   formirajParove(sesiri.D, sesiri.G);
   formirajParove(sesiri.E, sesiri.F);
 
-  // Ispisivanje parova četvrtfinala
+  // Ispisivanje parova cetvrtfinala
   console.log();
-  console.log("Parovi četvrtfinala:");
+  console.log("Parovi cetvrtfinala:");
   cetvrtfinale.forEach((par, index) => {
     console.log(`Par ${index + 1}: ${par.tim1.Team} vs ${par.tim2.Team}`);
   });
 
-  // Simuliranje četvrtfinala
+  // Simuliranje cetvrtfinala
   const polufinalisti = [];
   const gubitniciCetvrtfinala = [];
 
@@ -63,7 +62,7 @@ function eliminacionaFaza(grupe, timoviIzGrupa, formaTimova) {
     );
     const pobednik = rezultat.score1 > rezultat.score2 ? par.tim1 : par.tim2;
     polufinalisti.push(pobednik);
-    // Dodavanje gubitnika četvrtfinala
+    // Dodavanje gubitnika cetvrtfinala
     const gubitnik = rezultat.score1 < rezultat.score2 ? par.tim1 : par.tim2;
     gubitniciCetvrtfinala.push(gubitnik);
   });
@@ -75,7 +74,7 @@ function eliminacionaFaza(grupe, timoviIzGrupa, formaTimova) {
   const polufinale = [];
   const formirajParovePolufinala = () => {
     const timovi = [...polufinalisti];
-    // Nasumično formiranje parova polufinala
+    // Nasumicno formiranje parova polufinala
     while (timovi.length > 1) {
       const tim1 = timovi.pop();
       const tim2 = timovi.pop();
@@ -102,7 +101,7 @@ function eliminacionaFaza(grupe, timoviIzGrupa, formaTimova) {
     );
     const pobednik = rezultat.score1 > rezultat.score2 ? par.tim1 : par.tim2;
     finalisti.push(pobednik);
-    // Dodavanje gubitnika polufinala
+    // Dodavanje gubitnika polufinala za trece mesto
     const gubitnik = rezultat.score1 < rezultat.score2 ? par.tim1 : par.tim2;
     gubitniciPolufinala.push(gubitnik);
   });
@@ -111,31 +110,31 @@ function eliminacionaFaza(grupe, timoviIzGrupa, formaTimova) {
   /*console.log("Finalisti:");
   finalisti.forEach((tim) => console.log(tim.Team));*/
 
-  // Formiranje parova za finale i utakmicu za treće mesto
+  // Formiranje parova za finale i utakmicu za trece mesto
   const finale = [finalisti[0], finalisti[1]];
   const treceMesto = [gubitniciPolufinala[0], gubitniciPolufinala[1]];
 
   console.log();
   console.log(`Finale: ${finale[0].Team} vs ${finale[1].Team}`);
   console.log(
-    `Utakmica za treće mesto: ${treceMesto[0].Team} vs ${treceMesto[1].Team}`
+    `Utakmica za trece mesto: ${treceMesto[0].Team} vs ${treceMesto[1].Team}`
   );
 
-  // Simuliranje utakmica za treće mesto i finale
+  // Simuliranje utakmica za trece mesto i finale
   const rezultatTreceMesto = odigrajUtakmicu(
     treceMesto[0],
     treceMesto[1],
     formaTimova
   );
   console.log(
-    `Rezultat utakmice za treće mesto: ${rezultatTreceMesto.tim1} vs ${rezultatTreceMesto.tim2}: ${rezultatTreceMesto.score1} - ${rezultatTreceMesto.score2}`
+    `Rezultat utakmice za trece mesto: ${rezultatTreceMesto.tim1} vs ${rezultatTreceMesto.tim2}: ${rezultatTreceMesto.score1} - ${rezultatTreceMesto.score2}`
   );
   const treceMestoPobednik =
     rezultatTreceMesto.score1 > rezultatTreceMesto.score2
       ? treceMesto[0]
       : treceMesto[1];
 
-  //console.log(`Pobednik utakmice za treće mesto: ${treceMestoPobednik.Team}`);
+  //console.log(`Pobednik utakmice za trece mesto: ${treceMestoPobednik.Team}`);
   const rezultatFinale = odigrajUtakmicu(finale[0], finale[1], formaTimova);
   console.log(
     `Rezultat finala: ${rezultatFinale.tim1} vs ${rezultatFinale.tim2}: ${rezultatFinale.score1} - ${rezultatFinale.score2}`

@@ -11,7 +11,7 @@ function ispisRezultata(grupa, kola) {
 function ispisGrupa(grupa, timovi) {
   //Ispis svih grupa
   console.log(`Group ${grupa} Standings:`);
-  console.log("Pozicija | Država            | ISO | Poeni | FOR | AGT | -/+");
+  console.log("Pozicija | Drzava            | ISO | Poeni | FOR | AGT | -/+");
   console.log("-----------------------------------------");
 
   timovi.forEach((tim, index) => {
